@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fun with Maths</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #fce4ec;
+      color: #333;
+      font-size: 1.5em;
+    }
+    h1 {
+      color: #d81b60;
+      font-size: 2.5em;
+    }
+    .container {
+      margin: 30px;
+    }
+    button {
+      background-color: #d81b60;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      margin: 15px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ad1457;
+    }
+    input {
+      font-size: 1.2em;
+      padding: 10px;
+      margin: 10px;
+      width: 200px;
+    }
+    img {
+      max-width: 200px;
+      margin: 15px;
+      border-radius: 15px;
+    }
+    .hidden {
+      display: none;
+    }
+    p {
+      margin: 20px 0;
+    }
+    .animated {
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Fun with Maths!</h1>
+  <p>Math is magical, let's explore together!</p>
+  <div id="homepage" class="container">
+    <button onclick="showPage('games')">Play Games</button>
+    <button onclick="showPage('puzzles')">Solve Puzzles</button>
+    <button onclick="showPage('facts')">Learn Fun Facts</button>
+  </div>
+
+  <!-- Games Section -->
+  <div id="games" class="container hidden">
+    <h2>Let's Play Some Games!</h2>
+    <p id="game-question">1. How many apples do we have if we add 3 + 5?</p>
+    <img id="game-image" src="https://via.placeholder.com/200/FFC107/FFFFFF?text=Apples" alt="Apples">
+    <input type="number" id="game-answer" placeholder="Your answer">
+    <button onclick="checkAnswer()">Submit</button>
+    <p id="game-feedback"></p>
+    <button onclick="nextGame()">Next Example</button>
+    <button onclick="goBack()">Back to Home</button>
+  </div>
+
+  <!-- Puzzles Section -->
+  <div id="puzzles" class="container hidden">
+    <h2>Solve These Fun Puzzles!</h2>
+    <p id="puzzle-question">1. I have _ legs, and I’m a spider! (Hint: Count by 2s)</p>
+    <img id="puzzle-image" src="https://via.placeholder.com/200/4CAF50/FFFFFF?text=Spider" alt="Spider">
+    <input type="number" id="puzzle-answer" placeholder="Your answer">
+    <button onclick="checkPuzzle()">Submit</button>
+    <p id="puzzle-feedback"></p>
+    <button onclick="nextPuzzle()">Next Puzzle</button>
+    <button onclick="goBack()">Back to Home</button>
+  </div>
+
+  <!-- Fun Facts Section -->
+  <div id="facts" class="container hidden">
+    <h2>Did You Know?</h2>
+    <p id="fact">1. A pizza is just a circle divided into slices — that's fractions!</p>
+    <img id="fact-image" src="https://via.placeholder.com/200/E91E63/FFFFFF?text=Pizza" alt="Pizza" class="animated">
+    <button onclick="nextFact()">Next Fact</button>
+    <button onclick="goBack()">Back to Home</button>
+  </div>
+
+  <script>
+    let gameIndex = 0;
+    let games = [
+      { question: "How many apples do we have if we add 3 + 5?", answer: 8, image: "https://via.placeholder.com/200/FFC107/FFFFFF?text=Apples" },
+      { question: "What is 10 - 6?", answer: 4, image: "https://via.placeholder.com/200/8BC34A/FFFFFF?text=Subtraction" },
+      { question: "If you have 2 bananas and get 3 more, how many do you have?", answer: 5, image: "https://via.placeholder.com/200/FFEB3B/FFFFFF?text=Bananas" },
+      { question: "What is 4 x 2?", answer: 8, image: "https://via.placeholder.com/200/03A9F4/FFFFFF?text=Multiplication" }
+    ];
+
+    let puzzleIndex = 0;
+    let puzzles = [
+      { question: "I have _ legs, and I’m a spider! (Hint: Count by 2s)", answer: 8, image: "https://via.placeholder.com/200/4CAF50/FFFFFF?text=Spider" },
+      { question: "I am a number. Double me, and you get 10. What am I?", answer: 5, image: "https://via.placeholder.com/200/FF9800/FFFFFF?text=Double" },
+      { question: "What comes after 2 but before 4?", answer: 3, image: "https://via.placeholder.com/200/9C27B0/FFFFFF?text=Sequence" },
+      { question: "I am less than 10 but more than 5. What could I be?", answer: 6, image: "https://via.placeholder.com/200/FF5722/FFFFFF?text=Number" }
+    ];
+
+    let factIndex = 0;
+    let facts = [
+      { text: "A pizza is just a circle divided into slices — that's fractions!", image: "https://via.placeholder.com/200/E91E63/FFFFFF?text=Pizza" },
+      { text: "Did you know? 2 x 3 is the same as 3 x 2! That’s symmetry in math!", image: "https://via.placeholder.com/200/03A9F4/FFFFFF?text=Symmetry" },
+      { text: "If you have 10 fingers, what's 5 fingers + 5 fingers? It's 10!", image: "https://via.placeholder.com/200/FFC107/FFFFFF?text=Fingers" },
+      { text: "Did you know? A square has 4 equal sides, and a rectangle has 2 pairs of equal sides!", image: "https://via.placeholder.com/200/8BC34A/FFFFFF?text=Shapes" }
+    ];
+
+    function showPage(pageId) {
+      document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+      document.getElementById(pageId).classList.remove('hidden');
+    }
+
+    function goBack() {
+      document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+      document.getElementById('homepage').classList.remove('hidden');
+    }
+
+    function checkAnswer() {
+      const answer = document.getElementById('game-answer').value;
+      const feedback = document.getElementById('game-feedback');
+      if (answer == games[gameIndex].answer) {
+        feedback.textContent = "Correct! Great job!";
+      } else {
+        feedback.textContent = "Oops! Try again!";
+      }
+    }
+
+    function nextGame() {
+      gameIndex = (gameIndex + 1) % games.length;
+      document.getElementById('game-question').textContent = `${gameIndex + 1}. ${games[gameIndex].question}`;
+      document.getElementById('game-image').src = games[gameIndex].image;
+      document.getElementById('game-answer').value = '';
+      document.getElementById('game-feedback').textContent = '';
+    }
+
+    function checkPuzzle() {
+      const answer = document.getElementById('puzzle-answer').value;
+      const feedback = document.getElementById('puzzle-feedback');
+      if (answer == puzzles[puzzleIndex].answer) {
+        feedback.textContent = "Correct! Well done!";
+      } else {
+        feedback.textContent = "Not quite, try again!";
+      }
+    }
+
+    function nextPuzzle() {
+      puzzleIndex = (puzzleIndex + 1) % puzzles.length;
+      document.getElementById('puzzle-question').textContent = `${puzzleIndex + 1}. ${puzzles[puzzleIndex].question}`;
+      document.getElementById('puzzle-image').src = puzzles[puzzleIndex].image;
+      document.getElementById('puzzle-answer').value = '';
+      document.getElementById('puzzle-feedback').textContent = '';
+    }
+
+    function nextFact() {
+      factIndex = (factIndex + 1) % facts.length;
+      document.getElementById('fact').textContent = `${factIndex + 1}. ${facts[factIndex].text}`;
+      document.getElementById('fact-image').src = facts[factIndex].image;
+    }
+  </script>
+</body>
+</html>
